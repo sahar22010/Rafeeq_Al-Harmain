@@ -116,7 +116,8 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("/*", (req, res) => {
+    // Fallback handler for SPA routing - must be the last middleware
+    app.use((req: express.Request, res: express.Response) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
@@ -129,3 +130,4 @@ async function startServer() {
 startServer().catch((err) => {
   console.error("Failed to start server:", err);
 });
+
